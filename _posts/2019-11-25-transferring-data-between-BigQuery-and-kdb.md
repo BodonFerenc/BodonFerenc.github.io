@@ -517,7 +517,7 @@ It is worth comparing the syntax of q and BigQuery side-by-side.
 | action | q | BigQuery |
 | --- | --- | --- |
 | normalize | `ungroup ta` | <code>SELECT id, price, size from \`ta\`, <br /> UNNEST(price) AS price WITH OFFSET pos1, <br />UNNEST(size) AS size WITH OFFSET pos2 <br />WHERE pos1 = pos2</code> |
-| de-normalize | <code>\`id xkey t</code> | <code>SELECT id, <br />ARRAY_AGG(price), <br />ARRAY_AGG(size) FROM \`t\` <br />GROUP by id</code> |
+| de-normalize | ``` `id xkey t``` | <code>SELECT id, <br />ARRAY_AGG(price), <br />ARRAY_AGG(size) FROM \`t\` <br />GROUP by id</code> |
 
 We can compare the number of characters and words because this relates to developers' productivity and maintenance costs.
 
