@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Adding 42 to a list"
 date:   2019-09-04
 categories: Office Life

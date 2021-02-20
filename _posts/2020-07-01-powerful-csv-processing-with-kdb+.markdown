@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Powerful CSV processing with kdb+"
 date:   2020-07-01
 categories: kdb+ tutorial
