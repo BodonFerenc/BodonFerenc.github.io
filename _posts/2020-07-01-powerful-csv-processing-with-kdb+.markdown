@@ -15,28 +15,6 @@ This article provides a glimpse into the available tools to work with CSV files 
 
 ![CSV and q/kdb+](/assets/csv/pic/csvCoverPhotoChopped.png)
 
-#### Table of contents
-
-- [Table of contents](#table-of-contents)
-- [Common CSV tools](#common-csv-tools)
-    - [Linux command-line tools](#linux-command-line-tools)
-    - [CSVKit](#csvkit)
-    - [xsv](#xsv)
-- [Type inference](#type-inference)
-- [q/kdb+](#qkdb)
-    - [Type conversion](#type-conversion)
-- [kdb+ based one-liners](#kdb-based-one-liners)
-    - [Selecting columns, filtering, sorting](#selecting-columns-filtering-sorting)
-    - [Pipes](#pipes)
-    - [Indexing](#indexing)
-- [Exotic functions](#exotic-functions)
-    - [Pivot](#pivot)
-    - [Array columns](#array-columns)
-    - [Join](#join)
-- [Performance](#performance)
-- [Conclusion](#conclusion)
-        - [Acknowledgement](#acknowledgement)
-
 ## Common CSV tools
 ### Linux command-line tools
 Many CSV processing need to be done in a Linux or Mac environment that has a powerful terminal console with some kind of shells on it. Most shells, like Bash, support arrays. You can read a CSV line-by-line and store all fields in an array variable. You can use built-in string manipulation and integer calculations (even float calculations with e.g `bc -l`) to operate on cell values. The code will be lengthy and hard to maintain.

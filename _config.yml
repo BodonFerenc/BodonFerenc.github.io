@@ -31,7 +31,6 @@ author: Ferenc Bodon
 avatar: /assets/profile.png
 location: Budapest
 skin: midnight
-toc: true
 
 plugins:
   - jekyll-feed
