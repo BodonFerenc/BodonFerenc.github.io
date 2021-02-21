@@ -16,9 +16,7 @@ This article provides a glimpse into the available tools to work with CSV files 
 
 #### Table of contents
 
-<!-- TOC -->
-
-        - [Table of contents](#table-of-contents)
+- [Table of contents](#table-of-contents)
 - [Common CSV tools](#common-csv-tools)
     - [Linux command-line tools](#linux-command-line-tools)
     - [CSVKit](#csvkit)
@@ -37,8 +35,6 @@ This article provides a glimpse into the available tools to work with CSV files 
 - [Performance](#performance)
 - [Conclusion](#conclusion)
         - [Acknowledgement](#acknowledgement)
-
-<!-- /TOC -->
 
 ## Common CSV tools
 ### Linux command-line tools
