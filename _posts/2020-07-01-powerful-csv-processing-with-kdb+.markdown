@@ -14,8 +14,10 @@ This article provides a glimpse into the available tools to work with CSV files 
 
 ![CSV and q/kdb+](/assets/csv/pic/csvCoverPhotoChopped.png)
 
+#### Table of contents
 <!-- TOC -->
 
+        - [Table of contents](#table-of-contents)
 - [Common CSV tools](#common-csv-tools)
     - [Linux command-line tools](#linux-command-line-tools)
     - [CSVKit](#csvkit)
