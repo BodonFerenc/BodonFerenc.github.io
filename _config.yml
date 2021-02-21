@@ -39,11 +39,11 @@ toc: true
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
-  - jekyll-sitemap
-  - jekyll-paginate
+#  - jekyll-sitemap
+#  - jekyll-paginate
 
 remote_theme: ngzhio/jekyll-theme-hamilton
-paginate: 3
+# paginate: 3
 
 
 
