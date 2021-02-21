@@ -26,11 +26,18 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "BodonFerenc.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  BodonFerenc
 
+author: Ferenc Bodon
+location: Budapest
+
 # Build settings
-theme: minima
+# theme: minima
 #theme: jekyll-theme-tactile
 plugins:
   - jekyll-feed
+  - jekyll-remote-theme
+
+remote_theme: ngzhio/jekyll-theme-hamilton
+skin: midnight
 
 # Exclude from processing.
 # The following items will not be processed, by default.
