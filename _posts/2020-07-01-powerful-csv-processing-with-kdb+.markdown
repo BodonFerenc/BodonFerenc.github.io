@@ -2,7 +2,7 @@
 layout: post
 title:  "Powerful CSV processing with kdb+"
 date:   2020-07-01
-categories: kdb+ tutorial
+categories: data analysis
 tags: kdb,q,csv
 ---
 ![CSV and q/kdb+](/assets/csv/pic/csvCoverPhotoChopped.png)
