@@ -6,6 +6,14 @@ categories: kdb+ tutorial
 tags: kdb,q,BigQuery,interoperability,GCP
 ---
 
+[Q/kdb+](https://code.kx.com/v2/) and [BigQuery](https://cloud.google.com/bigquery/) are two widely used, robust and popular database systems. BigQuery is a fully managed, massively parallel, cloud database solution created by Google. It is built into the [Google Cloud Platform (GCP)](https://cloud.google.com/gcp/). kdb+ is a high-performance time-series data store, famous for its powerful query language [q](https://code.kx.com/q4m3/) that makes analyzing very large datasets extremely efficient. kdb+ supports vector operations, functional programming and tables are first-class citizens within the q language.
+
+In this article, you will learn how to transfer data between kdb+ and BigQuery in both directions. You might want to do this because a source of data you wish to ingest into kdb+ is held in BigQuery and your time-series analytics uses kdb+ with your business logic encoded in the q language. For example, in BigQuery,  the query language it offers is verbose and therefore difficult to maintain. In q, the queries are often simpler and an order of magnitude smaller in complexity. kdb+ also allows you to decouple business logic from the underlying data. In BigQuery expressions, the tables and column names are hardcoded. kdb+ is fully dynamic, meaning that anything can be a parameter even the operators of a query.
+
+On the other hand, you might want to upload kdb+ data to BigQuery for backup purposes or for sharing with another application stack, by employing the elaborated access management that the Google Cloud Platform offers. kdb+ users are already host their kdb+ solutions in the public cloud and this includes GCP. If you are evaluating and discovering the tools and options available within GCP, one of the tools often introduced by Google is BigQuery. This article helps our users understand how to interoperate with BigQuery.
+
+For several programming languages like Python, R, Scala (Spark) there is BigQuery client library which allows direct data transfer to and from BigQuery - a simple function call to upload to or download from BigQuery does the job. In kdb+ you need a middleman.
+
 #### Table of contents
 
 1. [Type comparison](#typecomparison)
@@ -31,14 +39,6 @@ tags: kdb,q,BigQuery,interoperability,GCP
 5. [Streaming data](#streamingdata)
 6. [Conclusion](#conclusion)
 
-
-[Q/kdb+](https://code.kx.com/v2/) and [BigQuery](https://cloud.google.com/bigquery/) are two widely used, robust and popular database systems. BigQuery is a fully managed, massively parallel, cloud database solution created by Google. It is built into the [Google Cloud Platform (GCP)](https://cloud.google.com/gcp/). kdb+ is a high-performance time-series data store, famous for its powerful query language [q](https://code.kx.com/q4m3/) that makes analyzing very large datasets extremely efficient. kdb+ supports vector operations, functional programming and tables are first-class citizens within the q language.
-
-In this article, you will learn how to transfer data between kdb+ and BigQuery in both directions. You might want to do this because a source of data you wish to ingest into kdb+ is held in BigQuery and your time-series analytics uses kdb+ with your business logic encoded in the q language. For example, in BigQuery,  the query language it offers is verbose and therefore difficult to maintain. In q, the queries are often simpler and an order of magnitude smaller in complexity. kdb+ also allows you to decouple business logic from the underlying data. In BigQuery expressions, the tables and column names are hardcoded. kdb+ is fully dynamic, meaning that anything can be a parameter even the operators of a query.
-
-On the other hand, you might want to upload kdb+ data to BigQuery for backup purposes or for sharing with another application stack, by employing the elaborated access management that the Google Cloud Platform offers. kdb+ users are already host their kdb+ solutions in the public cloud and this includes GCP. If you are evaluating and discovering the tools and options available within GCP, one of the tools often introduced by Google is BigQuery. This article helps our users understand how to interoperate with BigQuery.
-
-For several programming languages like Python, R, Scala (Spark) there is BigQuery client library which allows direct data transfer to and from BigQuery - a simple function call to upload to or download from BigQuery does the job. In kdb+ you need a middleman.
 
 ## Type comparison
 Let us compare the type of a table cell in kdb+ and BigQuery. Python's library Pandas can act as a middleman in the transfer so we include it in the table below.

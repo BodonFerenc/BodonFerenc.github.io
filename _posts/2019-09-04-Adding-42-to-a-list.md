@@ -6,12 +6,10 @@ categories: Office Life
 tags: python,c,java,kdb,numpy,R,Matlab,functionalprogramming,vectorprogramming
 ---
 
+The Company ColorCode LTD truly believes in inclusion and diversity and lets their developers decide which programming language they wish to use.
+
 ![Adding 42 to a list](/assets/fortytwo/cover_dev_to.jpg)
 
-
-_This post was originally published on [LinkedIn](https://www.linkedin.com/pulse/adding-42-list-ferenc-bodon-ph-d-/)._
-
-The Company ColorCode LTD truly believes in inclusion and diversity and lets their developers decide which programming language they wish to use.
 
 Jack is a C programmer and has been assigned to an ad-hoc task of transferring some data. He quickly puts together a Python script in which he adds 42 to all elements of list _l_.
 
@@ -164,3 +162,5 @@ Deekshant from Quality Management welcomes the discussion. He would like to make
 
 
 _DISCLAIMER. This is a work of fiction. Names, characters, businesses, events, and incidents are either the products of the author’s imagination or used in a fictitious manner. Any resemblance to actual persons or companies is purely coincidental._
+
+_This post was originally published on [LinkedIn](https://www.linkedin.com/pulse/adding-42-list-ferenc-bodon-ph-d-/)._
