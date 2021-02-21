@@ -3,7 +3,7 @@ layout: post
 title:  "Powerful CSV processing with kdb+"
 date:   2020-07-01
 categories: data analysis
-tags: kdb,q,csv
+tags: kdb,q,csv,csvkit,xsv,sqlite
 ---
 
 Comma-separated text files (CSV) are the most fundamental format for data processing. All programming languages and software that support working with relational data, also provide some level of CSV handling. You can persist and process data without installing a database management system. Often you don't need a full-blown DBMS with all its features, like handling transactions and concurrent/remote access, indexing, etc… The lightweight CSV format allows for easy processing and sharing of the captured information.
