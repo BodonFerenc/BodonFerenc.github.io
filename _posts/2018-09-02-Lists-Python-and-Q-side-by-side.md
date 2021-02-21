@@ -2,7 +2,7 @@
 layout: post
 title:  "Lists - Python and Q side-by-side"
 date:   2018-09-02
-categories: kdb+ tutorial
+category: kdb+ tutorial
 tags: kdb q python pandas numpy
 ---
 

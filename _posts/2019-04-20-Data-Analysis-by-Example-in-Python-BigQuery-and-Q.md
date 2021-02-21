@@ -2,7 +2,7 @@
 layout: post
 title:  "Data Analysis by Example in Python, BigQuery and Q"
 date:   2019-04-20
-categories: data analysis
+category: data analysis
 tags: python kdb BigQuery pandas numpy
 ---
 

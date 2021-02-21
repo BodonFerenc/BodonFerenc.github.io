@@ -2,7 +2,7 @@
 layout: post
 title:  "Transferring data between BigQuery and kdb+"
 date:   2019-11-25
-categories: kdb+ tutorial
+category: kdb+ tutorial
 tags: kdb q BigQuery interoperability GCP pandas
 ---
 

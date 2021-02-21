@@ -2,7 +2,7 @@
 layout: post
 title:  "Adding 42 to a list"
 date:   2019-09-04
-categories: Office Life
+category: Office Life
 tags: python c java kdb numpy R Matlab functionalprogramming vectorprogramming
 ---
 

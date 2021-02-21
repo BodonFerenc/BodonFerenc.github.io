@@ -2,7 +2,7 @@
 layout: post
 title:  "Powerful CSV processing with kdb+"
 date:   2020-07-01
-categories: data analysis
+category: data analysis
 tags: kdb q csv csvkit xsv sqlite
 ---
 
