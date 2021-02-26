@@ -10,4 +10,4 @@ tags: kdb q python pandas numpy
 
 The list is the most fundamental data structure in programming. **In this article, I will compare how the two languages handle lists.** This comparison is useful for Q programmers who would like to pick up Python and play with e.g. built-in machine learning algorithms. Python developers will also benefit from the comparison especially if they are interested in making good money and finding a job in the financial industry where data warehouses are often built on top of Q/Kdb+.
 
-Read the full article on [LinkedIn](https://www.linkedin.com/pulse/lists-python-q-side-by-side-ferenc-bodon-ph-d-/).
+Carry on and read the full article on [LinkedIn](https://www.linkedin.com/pulse/lists-python-q-side-by-side-ferenc-bodon-ph-d-/).
