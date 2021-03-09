@@ -2,7 +2,7 @@
 layout: post
 title:  "Python for data analysis… is it really that simple?!?"
 date:   2020-04-02
-tags: python pandas kdb numpy R vaex sql r bigquery plyr dplyr dask ray modin
+tags: python pandas kdb numpy R vaex sql r bigquery plyr dplyr dask ray modin distributed-computing
 ---
 Python is a popular programming language that is easy to learn, efficient and enjoys the support of a large and active community. It is a general-purpose language with libraries specialized for various areas, including web development, scripting, data science, and DevOps.
 
