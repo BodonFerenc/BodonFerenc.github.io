@@ -14,7 +14,7 @@ The first function that you learn on your way to the functional programing world
 ```
 
 ```q
-q)sum each (1 5;4 2 -2)
+q) sum each (1 5;4 2 -2)
 6 4
 ```
 
@@ -120,7 +120,7 @@ $ q -s 5
 ```
 
 ```q
-q)group {`::5000 ({system "sleep ", x; .z.i}; x)} peach string 20#.1
+q) group {`::5000 ({system "sleep ", x; .z.i}; x)} peach string 20#.1
 64683| 0 2 6 7 11 15
 64686| 1 3 10
 64684| 4 5 12 14 16 18 19
