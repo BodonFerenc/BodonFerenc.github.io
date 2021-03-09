@@ -8,6 +8,11 @@ toc: true
 
 The first function that you learn on your way to the functional programing world is [map](https://en.wikipedia.org/wiki/Map_(higher-order_function)). It applies a unary/monadic function to each element of a list and returns the list of results. In [q/kdb+](https://code.kx.com/q/) this function (iterator) is called [each](https://code.kx.com/q/ref/each/).
 
+```python
+>>> list(map(sum, [[1,5], [4,2,-2]]))
+[6, 4]
+```
+
 ```q
 q)sum each (1 5;4 2 -2)
 6 4
