@@ -6,7 +6,7 @@ tags: kdb q cloud functional-programming distributed-computing
 toc: true
 ---
 
-The first function that you learn on your way to the functional programing world is [map](https://en.wikipedia.org/wiki/Map_(higher-order_function)). It applies a unary/monadic function to each element of a list and returns the list of results.
+The first function that you learn on your way to the functional programming world is [map](https://en.wikipedia.org/wiki/Map_(higher-order_function)). It applies a unary/monadic function to each element of a list and returns the list of results.
 
 ```python
 >>> list(map(sum, [[1,5], [4,2,-2]]))
@@ -29,7 +29,7 @@ q) ("Jack"; "Linda"; "Steve") ,\: ", how are you today?"
 "Steve, how are you today?"
 ```
 
-Combining `each` with [dot](https://code.kx.com/q/ref/apply/#index) (aka. [indexing at depth](https://code.kx.com/q4m3/6_Functions/#653-indexing-at-depth)) allows you iterating over list of tuples and passing each element of the tuple as a separate parameter to a multivalence function.
+Combining `each` with [dot](https://code.kx.com/q/ref/apply/#index) (aka. [indexing at depth](https://code.kx.com/q4m3/6_Functions/#653-indexing-at-depth)) allows you to iterate over a list of tuples and passing each element of the tuple as a separate parameter to a multivalence function.
 
 ```q
 // splits a sentence by a separator then takes the nth word
@@ -45,9 +45,9 @@ q) (splitNtake .) each l
 
 If you start your q process with secondary threads (by [-s](https://code.kx.com/q/basics/cmdline/#-s-secondary-threads) command line parameter) on a multi-core computer then you can use function [peach](https://code.kx.com/q/ref/each/) instead of `each`. `peach` executes the monadic function in parallel. Furthermore, if you have multiple standalone q processes then you can instruct `peach` to delegate the tasks to the q processes. All you need is assigning the list of process handlers to variable [.z.pd](https://code.kx.com/q/ref/dotz/#zpd-peach-handles). Very simple!
 
-The q processes can live on different hosts and these worker processes can start in multi-threaded mode to leverage inherent parallelization of q. This is particularly useful in today's cloud environments where virtual machines (VM) are easy to allocate and VMs access to the same high performant block storage (like Persistent disks in Google Cloud and multi attach-EBS in AWS) or network storage. If you have an end-of-day work then you start up a large pool of hosts with hundreds of q processes to work parallel. Once the work is done you can rid of your infrastructure resources.
+The q processes can live on different hosts and these worker processes can start in multi-threaded mode to leverage the inherent parallelization of q. This is particularly useful in today's cloud environments where virtual machines (VM) are easy to allocate and VMs access to the same high performant block storage (like Persistent disks in Google Cloud and multi attach-EBS in AWS) or network storage. If you have an end-of-day work then you start up a large pool of hosts with hundreds of q processes to work parallel. Once the work is done you can rid of your infrastructure resources.
 
-Let us assume that you started the same number of q process on the same port range (variable `ports` of type string list) on a few machines (variable `hosts`). You can use function [cross](https://code.kx.com/q/ref/cross/) to get the cartesian product of hosts and ports
+Let us assume that you started the same number of q processes on the same port range (variable `ports` of type string list) on a few machines (variable `hosts`). You can use function [cross](https://code.kx.com/q/ref/cross/) to get the cartesian product of hosts and ports
 
 ```q
 .z.pd: `u#hopen each `$hosts cross ports;
@@ -73,9 +73,9 @@ q) group {system "sleep ", x; .z.i} peach string 20?.1
 62647| 4 5 8 16
 ```
 
-If the number of tasks is smaller than the number of processes then cross-based assignment of `.z.pd` might be inefficient. You may observe that some hosts are sweating and some hosts are just twiddling their thumbs.
+If the number of tasks is smaller than the number of processes then the cross-based assignment of `.z.pd` might be inefficient. You may observe that some hosts are sweating and some hosts are just twiddling their thumbs.
 
-Function `cross` takes the first element of the first list and concatenates with all elements of the second list. Next, it repeats this with the second element of the first list. So your result looks like  `host1:port1`, `host1:port2`, `host1:port3`, ... `host2:port1`, `host2:port2`, `host2:port3`, ...
+Function `cross` takes the first element of the first list and concatenates it with all elements of the second list. Next, it repeats this with the second element of the first list. So your result looks like  `host1:port1`, `host1:port2`, `host1:port3`, ... `host2:port1`, `host2:port2`, `host2:port3`, ...
 
 You need to iterate the other way to get the cartesian product. Fix the port and iterate over the hosts, then take another port and iterate over the hosts again. To achieve this you just need to recall that function cross is semantically equivalent to calling `each-right` on `each-left` then flattening the result, i.e.
 
@@ -91,7 +91,7 @@ If you change the order of each-left and each-right, i.e.
 
 then you achieve a more balanced load distribution. Tasks are distributed on the hosts fairly when the input list is short.
 
-Task delegation to processes assumes that the worker q processes are identical and either process is able to execute the task. This is not always the case there might be pools of q processes, each pool having its own responsibility. This is typical with horizontal partitioning of tables when data is distributed into shards therefore the each q process has visibility only to a subset of the data. q is famous for its database layer [kdb+](https://code.kx.com/q4m3/14_Introduction_to_Kdb%2B/) that can execute sql-like queries on on-disk or in-memory tables.
+Task delegation to processes assumes that the worker q processes are identical and either process is able to execute the task. This is not always the case there might be pools of q processes, each pool having its own responsibility. This is typical with horizontal partitioning of tables when data is distributed into shards therefore each q process has visibility only to a subset of the data. q is famous for its database layer [kdb+](https://code.kx.com/q4m3/14_Introduction_to_Kdb%2B/) that can execute sql-like queries on on-disk or in-memory tables.
 
 There are high performant network storage option available in many public clouds, however, the best performance is still achieved with locally attached SSDs or with [Intel Optane](https://code.kx.com/q/kb/optane/). Queries are often easy to rewrite by employing map-reduce to support horizontal partitioning of the data. To send a task to a specific pool of q workers we can employ two techniques, called one-shot requests and socket sharding.
 
