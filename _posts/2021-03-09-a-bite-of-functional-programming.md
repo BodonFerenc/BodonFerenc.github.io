@@ -20,7 +20,7 @@ q) sum each (1 5;4 2 -2)
 6 4
 ```
 
-Iterator [each-left](https://code.kx.com/q/ref/maps/#each-left-and-each-right) (denoted by `\:`) is something similar and comes handy if you have a dyadic function - like concatenation - and you would like to fix the second parameter and pass each element of a list as the first parameter
+Iterator [each-left](https://code.kx.com/q/ref/maps/#each-left-and-each-right) (denoted by `\:`) is something similar and is handy if you have a dyadic function - like concatenation - and you would like to fix the second parameter and pass each element of a list as the first parameter
 
 ```q
 q) ("Jack"; "Linda"; "Steve") ,\: ", how are you today?"
@@ -91,20 +91,20 @@ If you change the order of each-left and each-right, i.e.
 
 then you achieve a more balanced load distribution. Tasks are distributed on the hosts fairly when the input list is short.
 
-Task delegation to processes assumes that the worker q processes are identical and either process is able to execute the task. This is not always the case there might be pools of q processes, each pool having its own responsibility. This is typical with horizontal partitioning of tables when data is distributed into shards therefore each q process has visibility only to a subset of the data. q is famous for its database layer [kdb+](https://code.kx.com/q4m3/14_Introduction_to_Kdb%2B/) that can execute sql-like queries on on-disk or in-memory tables.
+Task delegation to processes assumes that the worker q processes are identical and either process is able to execute the task. This is not always the case there might be pools of q processes, each pool having its own responsibility. This is typical with horizontal partitioning of tables when data is distributed into shards therefore each q process has visibility only to a subset of the data. q is famous for its database layer [kdb+](https://code.kx.com/q4m3/14_Introduction_to_Kdb%2B/) that can execute SQL-like queries on on-disk or in-memory tables.
 
-There are high performant network storage option available in many public clouds, however, the best performance is still achieved with locally attached SSDs or with [Intel Optane](https://code.kx.com/q/kb/optane/). Queries are often easy to rewrite by employing map-reduce to support horizontal partitioning of the data. To send a task to a specific pool of q workers we can employ two techniques, called one-shot requests and socket sharding.
+There are high performant network storage options available in many public clouds, however, the best performance is still achieved with locally attached SSDs or with [Intel Optane](https://code.kx.com/q/kb/optane/). Queries are often easy to rewrite by employing map-reduce to support horizontal partitioning of the data. To send a task to a specific pool of q workers we can employ two techniques, called one-shot requests and socket sharding.
 
 ## One-shot requests
 
-The monadic function that runs by `peach` has certain limitations. It cannot use an open socket to send a message. [One-shot](https://code.kx.com/q/basics/ipc/#sync-request-get) messages come to our rescue. A one-shot request opens a connection, sends a synchronous request and closes the connection. In example below we send a one-shot request to a q process at `myhost:port` where dyadic function [fibonacci](https://code.kx.com/q4m3/1_Q_Shock_and_Awe/#112-example-fibonacci-numbers) is defined.
+The monadic function that runs by `peach` has certain limitations. It cannot use an open socket to send a message. [One-shot](https://code.kx.com/q/basics/ipc/#sync-request-get) messages come to our rescue. A one-shot request opens a connection, sends an synchronous request and closes the connection. In the example below, we send a one-shot request to a q process at `myhost:port` where dyadic function [fibonacci](https://code.kx.com/q4m3/1_Q_Shock_and_Awe/#112-example-fibonacci-numbers) is defined.
 
 ```q
 q) `:myhost:myport (`fibonacci; 5; 1 1)
 1 1 2 3 5 8 13
 ```
 
-If you have a map (or a function) that returns a q address for a given task then we can distribute tasks to specific q processes by starting the main q process with multiple threads (`-s` command line parameter with positive number). In example below our table `t` is horizontally partitioned by date and we would like to get all rows from `t` for a given date, stock pairs. Variable `m` maps dates to q addresses.
+If you have a map (or a function) that returns a q address for a given task then we can distribute tasks to specific q processes by starting the main q process with multiple threads (`-s` command line parameter with a ositive number). In the example below our table `t` is horizontally partitioned by date and we would like to get all rows from `t` for a given date, stock pairs. Variable `m` maps dates to q addresses.
 
 ```q
 ({m[x] ({select from t where date=x, stock=y}; x; y)}. ) peach flip (2021.01.26 2020.02.24 2018.09.20; `GOOG`IBM`MSFT)
@@ -114,7 +114,7 @@ Now, let's scale further and have a pool of processes instead of a solitary q pr
 
 ## Socket sharding
 
-[Socket sharding](https://code.kx.com/q/wp/socket-sharding/) on Linux boxes allow multiple q processes to use the same port. Simply prepend literal `rp,` to the port number. The Linux kernel takes care of distributing the task to the processes. The kernel tries to evenly distribute the task but it doesn't do it as efficiently as q. It can easily assign a task to a busy process  while other processes are free. This is demonstrated by the following code.
+[Socket sharding](https://code.kx.com/q/wp/socket-sharding/) on Linux boxes allows multiple q processes to use the same port. Simply prepend literal `rp,` to the port number. The Linux kernel takes care of distributing the task to the processes. The kernel tries to evenly distribute the task but it doesn't do it as efficiently as q. It can easily assign a task to a busy process  while other processes are free. This is demonstrated by the following code.
 
 ```bash
 $ for i in {1..5}; do q -p rp,5000 </dev/null &> log-$i.log &; done
@@ -132,7 +132,7 @@ q) group {`::5000 ({system "sleep ", x; .z.i}; x)} peach string 20#.1
 
 We can see that processes with PIDs 64683 and 64686 received the first two tasks and the third task was assigned again to 64683 although three q processes were free and waiting for work to do.
 
-To summary, parallel one-shot requests with socket sharding falls behind `.z.pd`- based approach in two aspects. First, every request has extra cost of opening and closing a connection. Second, q makes sure that it assigns a task to a free process if there is any. Linux kernel does not guarantee this efficiency. On the other hand `.z.pd`-based approach has a limitation that all worker processes are handled uniformly.
+To summary, parallel one-shot requests with socket sharding fall behind the `.z.pd`- based approach in two aspects. First, every request has the extra cost of opening and closing a connection. Second, q makes sure that it assigns a task to a free process if there is any. Linux kernel does not guarantee this efficiency. On the other hand `.z.pd`-based approach has a limitation that all worker processes are handled uniformly.
 
-To scale from a pool of q workers on the same host to a pool on multiple hosts we can use TCP load balancers offered by all cloud providers. You don't need any development to scale your infrastructure. Furthermore we can make use of autoscaling feature of the load balancers and start up new hosts with pools of q processes. All these do not require writing a single line of q code.
+To scale from a pool of q workers on the same host to a pool on multiple hosts we can use TCP load balancers offered by all cloud providers. You don't need any development to scale your infrastructure. Furthermore, we can make use of the autoscaling feature of the load balancers that starts up new hosts with pools of q processes under heavy load. All these do not require writing a single line of q code.
 
