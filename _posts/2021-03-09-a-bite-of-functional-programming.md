@@ -43,7 +43,7 @@ q) (splitNtake .) each l
 ```
 ## peach
 
-If you start your q process with secondary threads (by [-s](https://code.kx.com/q/basics/cmdline/#-s-secondary-threads) command line parameter) on a multi-core computer then you can use function [peach](https://code.kx.com/q/ref/each/) instead of `each`. `peach` executes the monadic function in parallel. Furthermore, if you have multiple standalone q processes then you can instruct `peach` to delegate the tasks to the q processes. All you need is assigning the list of process handlers to variable [.z.pd](https://code.kx.com/q/ref/dotz/#zpd-peach-handles). Very simple!
+If you start your q process with secondary threads (by [-s](https://code.kx.com/q/basics/cmdline/#-s-secondary-threads) command line parameter) on a multi-core computer then you can use function [peach](https://code.kx.com/q/ref/each/) instead of `each`. `peach` executes the monadic function in parallel. Furthermore, if you have multiple standalone q processes then you can instruct `peach` to delegate the tasks to the q processes. All you need is to assign the list of process handlers to variable [.z.pd](https://code.kx.com/q/ref/dotz/#zpd-peach-handles). Very simple!
 
 The q processes can live on different hosts and these worker processes can start in multi-threaded mode to leverage the inherent parallelization of q. This is particularly useful in today's cloud environments where virtual machines (VM) are easy to allocate and VMs access to the same high performant block storage (like Persistent disks in Google Cloud and multi attach-EBS in AWS) or network storage. If you have an end-of-day work then you start up a large pool of hosts with hundreds of q processes to work parallel. Once the work is done you can rid of your infrastructure resources.
 
@@ -97,7 +97,7 @@ There are high performant network storage options available in many public cloud
 
 ## One-shot requests
 
-The monadic function that runs by `peach` has certain limitations. It cannot use an open socket to send a message. [One-shot](https://code.kx.com/q/basics/ipc/#sync-request-get) messages come to our rescue. A one-shot request opens a connection, sends an synchronous request and closes the connection. In the example below, we send a one-shot request to a q process at `myhost:port` where dyadic function [fibonacci](https://code.kx.com/q4m3/1_Q_Shock_and_Awe/#112-example-fibonacci-numbers) is defined.
+The monadic function that runs by `peach` has certain limitations. It cannot use an open socket to send a message. [One-shot](https://code.kx.com/q/basics/ipc/#sync-request-get) messages come to our rescue. A one-shot request opens a connection, sends a synchronous request and closes the connection. In the example below, we send a one-shot request to a q process at `myhost:port` where dyadic function [fibonacci](https://code.kx.com/q4m3/1_Q_Shock_and_Awe/#112-example-fibonacci-numbers) is defined.
 
 ```q
 q) `:myhost:myport (`fibonacci; 5; 1 1)
