@@ -87,7 +87,7 @@ Another tool of parallel execution is [deferred responses](https://code.kx.com/q
 ## file-watching based solution (`async InotifyWait`)
 An alternative synchronization method involves file monitoring. Processes can execute the function upon detecting specific file operations. If the worker processes are spread across different servers then you need a shared file system that supports monitoring.
 
-Linux's [inotify](https://man7.org/linux/man-pages/man7/inotify.7.html) function (available in the package `inotify-tools`) serves as the foundation for file system monitoring. A kdb+ function utilizing the C API can wrap this function. Alternatively, the `inotifywait`` system command can be employed, albeit with less precision.
+Linux's [inotify](https://man7.org/linux/man-pages/man7/inotify.7.html) function (available in the package `inotify-tools`) serves as the foundation for file system monitoring. A kdb+ function utilizing the C API can wrap this function. Alternatively, the `inotifywait` system command can be employed, albeit with less precision.
 
 ## Results
 To assess the efficacy of these methods, a series of tests were conducted, each executed multiple times (20) to calculate the average, maximum, and standard deviation of maximal delays in microseconds. The number of kdb+ workers equaled the system's core count and were pinned to separate cores via [taskset](https://man7.org/linux/man-pages/man1/taskset.1.html).
