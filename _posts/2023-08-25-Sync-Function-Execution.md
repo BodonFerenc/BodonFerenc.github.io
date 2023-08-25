@@ -11,10 +11,10 @@ Implementing concurrent execution of a function across several kdb+ processes si
 
 The orchestration of this function execution is controlled by a central kdb+ process acting as a controller. The controller facilitates communication with worker processes responsible for executing the function. I considered two methods, namely qipc (Q Inter-Process Communication) and file operations to transmit execution messages from the controller to worker processes.
 
-The worker processes are configured to listen on distinct addresses, such as `host1:port1`, `host2:port2`, and `host3:port3`. The goal is to execute a function, denoted as `f`, across these worker processes. Notably, function `f` does not require any parameters. The list of worker addresses is defined as `A``:
+The worker processes are configured to listen on distinct addresses, such as `host1:port1`, `host2:port2`, and `host3:port3`. The goal is to execute a function, denoted as `f`, across these worker processes. Notably, function `f` does not require any parameters. The list of worker addresses is defined as `A`:
 
 ```q
-addr: ("host1:port1"; "host2:port2", "host3:port3")
+addr: ("host1:port1"; "host2:port2"; "host3:port3")
 A: hsym `$addr
 H: hopen each A
 ```
