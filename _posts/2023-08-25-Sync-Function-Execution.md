@@ -118,6 +118,7 @@ each deferred|tcp|757477|757669|179
 
 
 Run 2:
+
 method|medium|average|maximum|deviation
 | --- | --- | ---: | ---: | ---: |
 each async timer|cpu|1|2|0
@@ -140,7 +141,9 @@ Specification:
    * Memory:  (32) 128 GiB quad rank DDR4-3200 DIMMs
 
 ### Worker nr: 4
+
 Run 1:
+
 method|medium|average|maximum|deviation
 | --- | --- | ---: | ---: | ---: |
 each async timer|cpu|0|0|0
@@ -174,6 +177,7 @@ each deferred|tcp|756093|756153|72
 ### Worker nr: 128
 
 Run 1:
+
 method|medium|average|maximum|deviation
 | --- | --- | ---: | ---: | ---: |
 each async timer|cpu|1|2|0
