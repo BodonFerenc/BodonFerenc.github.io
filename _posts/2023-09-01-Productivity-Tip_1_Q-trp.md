@@ -34,7 +34,7 @@ q))x
 3
 ```
 
-However, when dealing with a remote kdb+ process, you're met with a stark `'type` error devoid of any contextual information regarding its origin. Assuming the connection handler is referenced as `h`, and the server holds the definitions of functions `double` and `add`, the following occurs:
+However, when dealing with a remote kdb+ process, you meet with a stark `'type` error devoid of any contextual information regarding its origin. Assuming the connection handler is referenced as `h`, and the server holds the definitions of functions `double` and `add`, the following occurs:
 
 ```q
 q)h "add[3; `foo]"
@@ -42,7 +42,7 @@ q)h "add[3; `foo]"
   [0]  h "add[3; `foo]"
 ```
 
-Here's where the extended trap function [.Q.trp](https://code.kx.com/q/ref/dotq/#trp-extend-trap)  together with [.Q.sbt](https://code.kx.com/q/ref/dotq/#sbt-string-backtrace) come to the rescue. You can execute your function in a protected mode and you can capture the call stack in case of errors:
+Here's where the extended trap function [.Q.trp](https://code.kx.com/q/ref/dotq/#trp-extend-trap) together with [.Q.sbt](https://code.kx.com/q/ref/dotq/#sbt-string-backtrace) come to the rescue. You can execute your function in a protected mode and you can capture the call stack in case of errors:
 
 ```q
 q)1 h ({.Q.trp[value; x; {.Q.sbt y}]}; "add[3; `foo]")
