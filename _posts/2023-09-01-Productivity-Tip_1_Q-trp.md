@@ -73,8 +73,8 @@ q)1 h ({.Q.trp[add[3]; x; {.Q.sbt y}]}; `foo)
 If you know the name of the function that causes the problem then it might be convenient to look around in the file that defines the function. Probably there are cross references, constants, comments that help you better understand the domain. Function `value` again comes to rescue. You need to pass the function to `value` to get some [useful information](https://code.kx.com/q/ref/value/#lambda) including the file path.
 
 ```q
-q) path: first -3# value@   / output of value is subject to change
-2) path add
+q) path: first -3# value@   / output of value is subject to change as per code.kx.com
+q) path add
 "/path/to/the/file.q"
 ```
 
