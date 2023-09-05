@@ -4,8 +4,11 @@ title:  "Transferring data between BigQuery and kdb+"
 date:   2019-11-25
 category: kdb+ tutorial
 tags: kdb q BigQuery interoperability GCP pandas
+category: data analysis
 toc: true
 ---
+UPDATE! KX rolled out its [BigQuery API](https://code.kx.com/insights/1.7/core/big-query/intro.html) as part of [kdb Insights](https://code.kx.com/insights/1.7/microservices/index.html), thus this article is considered as legacy.
+
 
 [Q/kdb+](https://code.kx.com/v2/) and [BigQuery](https://cloud.google.com/bigquery/) are two widely used, robust and popular database systems. BigQuery is a fully managed, massively parallel, cloud database solution created by Google. It is built into the [Google Cloud Platform (GCP)](https://cloud.google.com/gcp/). kdb+ is a high-performance time-series data store, famous for its powerful query language [q](https://code.kx.com/q4m3/) that makes analyzing very large datasets extremely efficient. kdb+ supports vector operations, functional programming and tables are first-class citizens within the q language.
 

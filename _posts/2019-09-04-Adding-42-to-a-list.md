@@ -4,6 +4,7 @@ title:  "Adding 42 to a list"
 date:   2019-09-04
 category: Office Life
 tags: python c java kdb numpy R Matlab functional-programming vectorprogramming
+category: kdb+ tutorial
 ---
 
 The Company ColorCode LTD truly believes in inclusion and diversity and lets their developers decide which programming language they wish to use.

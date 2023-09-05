@@ -3,6 +3,7 @@ layout: post
 title:  "A bite of functional programming and distributed computing"
 date:   2021-03-09
 tags: kdb q cloud functional-programming distributed-computing
+category: kdb+ tutorial
 toc: true
 ---
 
