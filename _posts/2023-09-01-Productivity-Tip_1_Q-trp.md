@@ -4,7 +4,7 @@ title:  "Productivity tip Nr. 1: call stack for remote function calls"
 date:   2023-09-01
 category: "kdb+ productivity tips"
 tags: kdb
-toc: false
+toc: true
 ---
 Fiona is a developer with limited kdb+ experience, often finds herself facing a challenge. She needs to execute a function (stored procedure) on a remote kdb+ server maintained by her IT people. Armed with VS Code's kdb+ plugin (or other tools like KX Developer or kdb+ Studio) she successfully connects to the kdb+ server and inputs the function name, sets the parameters, and hits the run command. However, instead of the expected outcome, she's greeted by a puzzling `'type` error. Just a `'type` error, nothing else. Fiona, like many kdb+ users, grapples with debugging and spends significant time tinkering with parameter values until success.
 
