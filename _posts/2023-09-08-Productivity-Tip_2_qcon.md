@@ -42,4 +42,4 @@ Interestingly, `qcon` triggers callback [.z.pq](https://code.kx.com/q/ref/dotz/#
 `qcon` hangs till the results are returned. [Geo's con](https://github.com/geocar/con) command is asynchronous, allowing you to start typing your next lengthy command immediately without waiting for the results of the previous commands.
 
 kdb+ developers often find it frustrating that the q console lacks support for multi-line commands. Overwriting a multi-line function is a typical practice during development or root cause investigation.
-Another exciting `qcon` replica is [qcon2.sh](https://github.com/patmok/qcon2), which supports sending multi-line commands. You need to type `p)` (that has nothing to do with the [ANSI SQL kdb+](https://code.kx.com/insights/1.7/core/sql.html) interface) and can past a multi-line command.
+Another exciting `qcon` replica is [qcon2.sh](https://github.com/patmok/qcon2), which supports sending multi-line commands. You need to type `p)` (that has nothing to do with [embedPy's promopt](https://github.com/KxSystems/embedPy)) and can past a multi-line command.
