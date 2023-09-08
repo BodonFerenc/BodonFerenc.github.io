@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Productivity tip Nr. 1: call stack for remote function calls"
+title:  "Productivity Tip No. 1: call stack for remote function calls"
 date:   2023-09-01
 category: "kdb+ productivity tips"
 tags: kdb
