@@ -9,7 +9,7 @@ toc: true
 
 Implementing concurrent execution of a function across several kdb+ processes simultaneously is an interesting topic worth investigating. While this requirement might not be a common use case, it becomes essential in scenarios such as evaluating storage performance scaling under simultaneous disk read operations within a storage performance tool - see [nano storage performance tool](https://github.com/KxSystems/nano) that triggered this small research.
 
-The orchestration of this function execution is controlled by a central kdb+ process acting as a controller. The controller facilitates communication with worker processes responsible for executing the function. I considered two methods, namely qipc (Q Inter-Process Communication) and file operations to transmit execution messages from the controller to worker processes.
+The orchestration of this function execution is controlled by a central kdb+ process acting as a controller. The controller facilitates communication with worker processes responsible for executing the function. I considered two methods, namely [qIPC](https://code.kx.com/q/basics/ipc/) (q Inter-Process Communication) and file operations to transmit execution messages from the controller to worker processes.
 
 The worker processes are configured to listen on distinct addresses, such as `host1:port1`, `host2:port2`, and `host3:port3`. The goal is to execute a function, denoted as `f`, across these worker processes. Notably, function `f` does not require any parameters. The list of worker addresses is defined as `A`:
 
@@ -33,7 +33,7 @@ Sending synchronous messages within `peach` threads is a risky proposition due t
 If we start the controller with an equivalent number of secondary threads as worker processes then each handler can have its own thread.
 
 ```q
-@[; (`f; ::)] peach H
+@[; (`f; ::)] peach H //Pass list of existing (H)andles
 ```
 
 Thus method is denoted by `peach sync` in the Results section.
@@ -50,19 +50,19 @@ one-shot ipc requests can be used within peach instead.
 ```
 
 ### one-shot request (`peach one-shot`)
-In cases where the controller cannot be started with a sufficient number of threads, one-shot requests](https://code.kx.com/q/basics/ipc/#sync-request-get) can be employed. This technique involves opening a connection, sending a synchronous message, and then closing the connection. Unlike the previous approach, this method is safe to use within `peach`:
+In cases where the controller cannot be started with a sufficient number of threads, [one-shot requests](https://code.kx.com/q/basics/ipc/#sync-request-get) can be employed. This technique involves opening a connection, sending a synchronous message, and then closing the connection instantly. Unlike the previous approach, this method is safe to use within `peach`:
 
 ```q
-@[; (`f; ::)] peach A
+@[; (`f; ::)] peach A //Pass list of (A)ddresses
 ```
 
-The controller kdb+ process must be started with a positive integer `-s` command line parameter.
+The controller kdb+ process must be started with a positive integer [-s](https://code.kx.com/q/basics/cmdline/#-s-secondary-threads) command line parameter.
 
 This approach introduces the overhead of establishing and closing connections for each task, impacting overall efficiency.
 
 ### peach handlers (`peach handles`)
 
-peach handlers are open connection handlers to remote kdb+ processes that kdb+ sends the function to execute during a `peach` statement. kdb+ assigns the tasks sequentially to the remote processes via a synchronous message call. If the length of the input list equals the number of remote processes then kdb+ guarantees that each kdb+ process gets one request.
+peach handlers are open connection handlers to remote kdb+ processes that kdb+ sends the function to execute during a `peach` statement. kdb+ assigns the tasks sequentially to the list of remote handles as defined in [.z.pd](https://code.kx.com/q/ref/dotz/#zpd-peach-handles) via a synchronous message call. If the length of the input list equals the number of remote processes then kdb+ guarantees that each kdb+ process gets one request.
 
 ```q
 .z.pd: `u#H
@@ -74,6 +74,7 @@ The controller kdb+ process must be started with a negative integer `-s` command
 Function `f` and all its dependencies need to be defined in the controller and in the workers. You can load the definition from files or transfer it via qipc. This constraint causes some inconvenience and has some maintenance costs.
 
 ## each-based solution
+
 We can iterate over the list of hosts or connection handlers by iterator `each`. `each` starts the tasks sequentially which means it waits till the previous task is finished. We need to make sure that starting the task, i.e. sending the start signal does not block the sender. We can achieve this by sending [asynchronous messages](https://code.kx.com/q/basics/ipc/#async-message-set).
 
 We implemented four async approaches:
@@ -82,9 +83,10 @@ We implemented four async approaches:
    * `async broadcast flush`: We send the same message to all workers. We can save serializing the same message by using an [asynchronous broadcast](https://code.kx.com/q/basics/internal/#-25x-async-broadcast) (`-25!`). The benefit of async broadcast is more obvious with large messages so we don't expect significant improvement in our case.
    * `each async time`: Our original goal is not to reduce the latency of sending but to start the function at the same time. We can achieve this by a timer in the worker and using async messages only to trigger the timer. kdb+'s timer solution is millisecond-based. If the workers are idle between task executions then we can fully spin the CPU and just increase a counter till the target time is reached (`a:0; while[.z.p<target;a+:1]`)
 
-Another tool of parallel execution is [deferred responses](https://code.kx.com/q/kb/deferred-response/) which are generally used in a naive implementation of kdb+ gateways. Deferred responses are used with synchronous messages to suspend the execution of the actual request to give CPU to other requests. Deferred responses do not help in our case because it frees up the workers as opposed to the controller, which remains blocked.
+Another tool of parallel execution is [deferred responses](https://code.kx.com/q/kb/deferred-response/) which are generally used in implementations of kdb+ gateways. Deferred responses are used with synchronous messages to suspend the execution of the actual request to give CPU to other requests. Deferred responses do not help in our case because it frees up the workers as opposed to the controller, which remains blocked.
 
 ## file-watching based solution (`async InotifyWait`)
+
 An alternative synchronization method involves file monitoring. Processes can execute the function upon detecting specific file operations. If the worker processes are spread across different servers then you need a shared file system that supports monitoring.
 
 Linux's [inotify](https://man7.org/linux/man-pages/man7/inotify.7.html) function (available in the package `inotify-tools`) serves as the foundation for file system monitoring. A kdb+ function utilizing the C API can wrap this function. Alternatively, the `inotifywait` system command can be employed, albeit with less precision.
@@ -209,9 +211,10 @@ each async|tcp|3296|14126|2557
 each deferred|tcp|32014930|32016046|868
 
 ## Conclusions
+
 The timer-based solution offers unparalleled synchronization, yet it maintains CPUs in an active state until function execution starts. Selecting the optimal trigger time requires meticulous consideration, accounting for hardware specifications and network latency. For applications demanding utmost precision, this method stands as the optimal choice.
 
-Following closely is the `peach`` approach employing synchronous messages, securing its position as a formidable contender—given that a dedicated thread can be assigned to each worker. However, it's noteworthy that this approach is unsupported in kdb+ 4.1. peach handlers exhibit commendable speed, though it necessitates the function's presence on both the controller and worker instances.
+Following closely is the `peach` approach employing synchronous messages, securing its position as a formidable contender—given that a dedicated thread can be assigned to each worker. However, it's noteworthy that this approach is unsupported in kdb+ 4.1. peach handlers exhibit commendable speed, though it necessitates the function's presence on both the controller and worker instances.
 
 For a trifecta of convenience, safety, and efficiency, the employment of one-shot requests emerges as a viable solution. This approach ensures expedient execution, all while circumventing potential pitfalls encountered in other methods.
 
