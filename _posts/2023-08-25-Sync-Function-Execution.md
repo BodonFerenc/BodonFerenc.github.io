@@ -62,16 +62,14 @@ This approach introduces the overhead of establishing and closing connections fo
 
 ### peach handlers (`peach handles`)
 
-peach handlers are open connection handlers to remote kdb+ processes that kdb+ sends the function to execute during a `peach` statement. kdb+ assigns the tasks sequentially to the list of remote handles as defined in [.z.pd](https://code.kx.com/q/ref/dotz/#zpd-peach-handles) via a synchronous message call. If the length of the input list equals the number of remote processes then kdb+ guarantees that each kdb+ process gets one request.
+peach handlers are open connection handlers to remote kdb+ processes that kdb+ sends the function to execute during a `peach` statement. kdb+ assigns the tasks sequentially to the list of remote handles as defined in [.z.pd](https://code.kx.com/q/ref/dotz/#zpd-peach-handles) via a synchronous message call. If the length of the input list equals the number of remote processes then kdb+ guarantees that each kdb+ process gets one request. The simplest way to guarantee this is to use `.z.pd` as the input list for `peach`, we dont use the values anyway.
 
 ```q
 .z.pd: `u#H
-f peach til count H
+f peach .z.pd
 ```
 
 The controller kdb+ process must be started with a negative integer `-s` command line parameter.
-
-Function `f` and all its dependencies need to be defined in the controller and in the workers. You can load the definition from files or transfer it via qipc. This constraint causes some inconvenience and has some maintenance costs.
 
 ## each-based solution
 
@@ -214,7 +212,7 @@ each deferred|tcp|32014930|32016046|868
 
 The timer-based solution offers unparalleled synchronization, yet it maintains CPUs in an active state until function execution starts. Selecting the optimal trigger time requires meticulous consideration, accounting for hardware specifications and network latency. For applications demanding utmost precision, this method stands as the optimal choice.
 
-Following closely is the `peach` approach employing synchronous messages, securing its position as a formidable contender—given that a dedicated thread can be assigned to each worker. However, it's noteworthy that this approach is unsupported in kdb+ 4.1. peach handlers exhibit commendable speed, though it necessitates the function's presence on both the controller and worker instances.
+Following closely is the `peach` approach employing synchronous messages, securing its position as a formidable contender—given that a dedicated thread can be assigned to each worker. However, it's noteworthy that this approach is unsupported in kdb+ 4.1. In contrast, peach handlers exhibit commendable speed and enjoys support in all kdb+ versions.
 
 For a trifecta of convenience, safety, and efficiency, the employment of one-shot requests emerges as a viable solution. This approach ensures expedient execution, all while circumventing potential pitfalls encountered in other methods.
 
