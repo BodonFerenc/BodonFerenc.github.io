@@ -6,8 +6,6 @@ tags: kdb q functions
 toc: true
 ---
 
-# Background
-
 Variadic functions—those that accept a variable number of arguments—are among the most underutilized features in q. This is largely due to sparse documentation and a historical lack of idiomatic examples.
 
 However, when paired with kdb+ 4.1 features like [type checking](https://code.kx.com/q/basics/pattern/#type-check) and [filter functions](https://code.kx.com/q/basics/pattern/#filter-function), variadic functions provide a robust, readable, and scalable approach to argument validation. This is particularly valuable when developing [kdb-x modules](https://code.kx.com/kdb-x/modules/module-index.html), where maintaining a clean and user-friendly API is paramount.
