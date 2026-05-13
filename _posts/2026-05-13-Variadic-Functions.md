@@ -45,7 +45,7 @@ By using `enlist` as the second parameter in a composition, we create a function
 variadicFn: ('[{ ... }; enlist])
 ```
 
-As a concrete example, Consider a function that calculates the future value of an investment:
+As a concrete example, consider a function that calculates the future value of an investment:
 
 $$\text{FutVal} = p \left(1 + \frac{r}{n}\right)^{n \times y}$$
 
