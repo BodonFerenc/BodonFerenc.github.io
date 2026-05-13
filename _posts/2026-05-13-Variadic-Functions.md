@@ -4,6 +4,7 @@ title:  "Variadic functions in q"
 date:   2026-05-13
 tags: kdb q functions
 toc: true
+math: true
 ---
 
 Variadic functions—those that accept a variable number of arguments—are among the most underutilized features in q. This is largely due to sparse documentation and a historical lack of idiomatic examples.
