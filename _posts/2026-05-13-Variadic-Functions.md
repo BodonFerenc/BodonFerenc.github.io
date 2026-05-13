@@ -40,30 +40,53 @@ q)c 3
 8
 ```
 
-Putting `enlist` and composition together creates a variadic function:
+Having `enlist` as the second parameter creates a variadic function that accepts a list as a single parameter:
 
 ```q
-fn: ('[{[params] ...}; enlist])
+variadicFn: ('[{ ... }; enlist])
 ```
 
-As a concrete example, consider a function that computes the future value of an investment. The compounding frequency (how often interest is applied) defaults to 12, but callers may override it when needed.
+As a concrete example, consider a function that computes the future value
+
+$$\text{FutVal} = p \left(1 + \frac{r}{n}\right)^{n \times y}$$
+
+of an investment. The compounding frequency (how often interest is applied - parameter `n`) defaults to 12, but callers may override it when needed.
 
 ```q
 futval: ('[{[params]
-    (p; a; y): 3#params;
+    (p; r; y): 3#params;
     n: $[3 = count params; 12; last params];
 
-    p * (1 + a % n) xexp (n * y)
+    p * (1 + r % n) xexp (n * y)
   };enlist])
 ```
 
 We can call the function with 3 or 4 parameters:
 
 ```q
-q)futval[100; 0.07; 30]         / using default compute frequency 12
+q)futval[100; 0.07; 30]         / using default compounding frequency, 12
 811.6497
 q)futval[100; 0.002; 30; 365]   / overriding compounding frequency with 365
 106.1836
+```
+
+## Factory
+
+Let us create a factory function that wraps a lambda into an assignable variadic function:
+
+```q
+makeVariadic: : ('[; enlist])
+```
+
+This factory function simplifies the code:
+
+```q
+futval: makeVariadic {[params]
+    (p; r; y): 3#params;
+    n: $[3 = count params; 12; last params];
+
+    p * (1 + r % n) xexp (n * y)
+  }
 ```
 
 ## Type checking
@@ -74,16 +97,16 @@ We can strengthen parameter handling by validating:
 - the types of parameters
 
 ```q
-futval: ('[{[params]
-    if[not count[params] in 3 4;
+futval: makeVariadic {[params]
+    if[not count[params] in 3 4;    / parameter count checking
         '"Function futval accepts 3 or 4 parameters, but received ", string count params];
-    (p:`j; a:`f; y:`j): 3#params;   / type checking
+    (p:`j; r:`f; y:`j): 3#params;   / type checking
     n: 12;
     if[4=count params;
         (n:`j): last params];       / type checking
 
-    p * (1 + a % n) xexp (n * y)
-  };enlist])
+    p * (1 + r % n) xexp (n * y)
+  }
 ```
 
 We can verify these checks by passing invalid arguments:
@@ -130,16 +153,16 @@ positiveNumber: {[name:`C; v]
     x
  }
 
-futval: ('[{[params]
+futval: makeVariadic {[params]
     if[not count[params] in 3 4;
         '"Function futval accepts 3 or 4 parameters, but received ", string count params];
-    (p:`j; a:`f; y:`j): 3#params;
+    (p:`j; r:`f; y:`j): 3#params;
     n: 3;
     if[4=count params;
         (n:positiveNumber["fourth parameter"]): last params];
 
-    p * (1 + a % n) xexp (n * y)
-  };enlist])
+    p * (1 + r % n) xexp (n * y)
+  }
 ```
 
 Example usage:
@@ -158,7 +181,7 @@ q)futval[100; 0.07; 30; -1]
 
 ## Optional parameters
 
-When a function has multiple optional parameters, it is recommended to pass them as a dictionary. This approach scales naturally as the module evolves and new options are added. For example, `getInMemoryTables` from the [Datagen module](https://code.kx.com/kdb-x/modules/datagen/overview.html) has one mandatory parameter and eleven optional ones. The [dictionary literal syntax](https://code.kx.com/kdb-x/how_to/basics/data_structures/dictionaries.html#dictionary-literal-syntax) introduced in kdb+ version 4.1 comes in handy here:
+When a function has multiple optional parameters, it is recommended to pass them as a dictionary. This approach scales naturally as the module evolves and new options are added. For example, `buildPersistedDB` from the [Datagen module](https://code.kx.com/kdb-x/modules/datagen/overview.html) has one mandatory parameter and eleven optional ones. The [dictionary literal syntax](https://code.kx.com/kdb-x/how_to/basics/data_structures/dictionaries.html#dictionary-literal-syntax) introduced in kdb+ version 4.1 comes in handy. Let us see a complex example of a "production" code:
 
 ```q
 DEFAULTS: ([
