@@ -75,7 +75,7 @@ q)futval[100; 0.002; 30; 365]   / Overrides n=365
 To streamline development, we can define a factory function that wraps any lambda into an assignable variadic function:
 
 ```q
-makeVariadic: : ('[; enlist])
+makeVariadic: ('[; enlist])
 ```
 
 This abstracts the composition logic, making the intent clearer:
