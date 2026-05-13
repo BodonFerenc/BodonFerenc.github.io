@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "kdb+ Variadic Functions"
-date:   2025-05-13
+title:  "Variadic functions in q"
+date:   2026-05-13
 tags: kdb q functions
 toc: true
 ---
