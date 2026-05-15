@@ -11,6 +11,8 @@ Variadic functions—those that accept a variable number of arguments—are amon
 
 However, when paired with kdb+ 4.1 features like [type checking](https://code.kx.com/q/basics/pattern/#type-check) and [filter functions](https://code.kx.com/q/basics/pattern/#filter-function), variadic functions provide a robust, readable, and scalable approach to argument validation. This is particularly valuable when developing [kdb-x modules](https://code.kx.com/kdb-x/modules/module-index.html), where maintaining a clean and user-friendly API is paramount.
 
+![Variadic functions](/assets/variadic_function.png)
+
 ## The Variadic Pattern
 
 in q, [enlist](https://code.kx.com/kdb-x/ref/enlist.html) is the only built-in function that natively accepts a variable number of arguments — and the only one that supports more than 8 parameters:
